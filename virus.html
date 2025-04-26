@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>⚠️ Virus Detected ⚠️</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: monospace;
+      text-align: center;
+      padding-top: 50px;
+      transition: background-color 0.3s;
+    }
+    #log {
+      font-size: 20px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scanning Your Device for Viruses...</h1>
+  <div id="log"></div>
+
+  <script>
+    const viruses = [
+      "Trojan.GenericKD",
+      "Backdoor.Win32",
+      "Worm.AutoRun",
+      "Adware.Agent",
+      "Ransomware.Locky",
+      "Spyware.Zeus",
+      "Rootkit.Agent"
+    ];
+    
+    let logDiv = document.getElementById('log');
+    let progress = 0;
+    let blinking = false;
+
+    function addLog(message) {
+      logDiv.innerText += message + "\n";
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function blinkBackground() {
+      blinking = !blinking;
+      document.body.style.backgroundColor = blinking ? 'red' : 'black';
+      setTimeout(blinkBackground, 500);
+    }
+
+    function vibratePhone() {
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+    }
+
+    function scan() {
+      if (progress >= 100) {
+        addLog("\n⚠️ Multiple critical threats found!");
+        setTimeout(() => {
+          alert("🚨 VIRUS DETECTED! Immediate Action Required!");
+          addLog("\nAttempting auto-cleanup...");
+          vibratePhone();
+        }, 2000);
+        return;
+      }
+      
+      progress += Math.floor(Math.random() * 5) + 1;
+      if (progress > 100) progress = 100;
+
+      addLog(`Scanning... ${progress}% complete`);
+      
+      if (Math.random() < 0.3) {
+        let virus = viruses[Math.floor(Math.random() * viruses.length)];
+        addLog(`⚠️ Threat detected: ${virus}`);
+        vibratePhone();
+      }
+
+      setTimeout(scan, 300);
+    }
+
+    scan();
+    blinkBackground();
+  </script>
+</body>
+</html>
